@@ -8,7 +8,17 @@ import rateLimit from 'express-rate-limit';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin: true, // Autorise tous les domaines (Vercel, local, etc.)
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
+// Répondre aux requêtes OPTIONS (preflight) immédiatement
+app.options('*', cors({ origin: true, credentials: true }));
+
 app.use(express.json());
 
 // Limiteur pour la génération IA (ex: 5 requêtes par heure par IP)
