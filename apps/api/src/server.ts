@@ -99,6 +99,11 @@ app.post('/api/webhooks/chariow', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`🚀 AfriBiz API running on http://localhost:${PORT}`);
-});
+
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 AfriBiz API running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;
