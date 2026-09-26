@@ -209,7 +209,7 @@ function PaymentModal({
   const handlePay = async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/payments/initiate', {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

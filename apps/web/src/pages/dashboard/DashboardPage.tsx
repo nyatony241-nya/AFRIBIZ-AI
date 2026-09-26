@@ -329,7 +329,7 @@ export default function DashboardPage() {
   const loadProjects = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/projects', { credentials: 'include' })
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/", { credentials: 'include' })
       if (res.ok) {
         const data = await res.json()
         setProjects(data.data ?? [])
@@ -355,7 +355,7 @@ export default function DashboardPage() {
   const confirmDelete = async () => {
     if (!deleteConfirm) return
     try {
-      await fetch(`/api/projects/${deleteConfirm}`, { method: 'DELETE', credentials: 'include' })
+      await fetch((import.meta.env.VITE_API_URL || "") + , { method: 'DELETE', credentials: 'include' })
       setProjects(prev => prev.filter(p => p.id !== deleteConfirm))
       toast.success('Projet supprimé')
     } catch {
@@ -367,7 +367,7 @@ export default function DashboardPage() {
 
   const handleRename = async (id: string, name: string) => {
     try {
-      await fetch(`/api/projects/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ name }) })
+      await fetch((import.meta.env.VITE_API_URL || "") + , { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ name }) })
       setProjects(prev => prev.map(p => p.id === id ? { ...p, name } : p))
       toast.success('Projet renommé')
     } catch {

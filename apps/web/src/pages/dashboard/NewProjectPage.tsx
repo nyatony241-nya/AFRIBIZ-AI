@@ -79,7 +79,7 @@ export default function NewProjectPage() {
       // Afficher un loading toast (la génération prend ~20 sec)
       const toastId = toast.loading("Analyse de votre projet par l'IA...")
       
-      const res = await fetch('/api/generate/dossier', {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)

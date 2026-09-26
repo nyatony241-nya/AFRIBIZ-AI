@@ -36,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkSession = useCallback(async () => {
     try {
-      const res = await fetch('/api/auth/session', { credentials: 'include' })
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/", { credentials: 'include' })
       if (res.ok) {
         const data = await res.json()
         if (data.success && data.data?.user) {
@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -78,7 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = useCallback(async (email: string, password: string, name: string) => {
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -97,14 +97,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = useCallback(async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' })
+      await fetch((import.meta.env.VITE_API_URL || "") + "/", { method: 'POST', credentials: 'include' })
     } catch { /* ignore */ }
     setUser(null)
     localStorage.removeItem('afribiz_demo_user')
   }, [])
 
   const resetPassword = useCallback(async (email: string) => {
-    const res = await fetch('/api/auth/reset-password', {
+    const res = await fetch((import.meta.env.VITE_API_URL || "") + "/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
