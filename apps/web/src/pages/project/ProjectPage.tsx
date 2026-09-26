@@ -9,6 +9,11 @@ import { type AfriBizDossier } from '@afribiz/shared'
 import { FinancialTab } from './components/FinancialTab'
 import { PlanTab } from './components/PlanTab'
 import { StudioTab } from './components/StudioTab'
+import { SyntheseTab } from './components/SyntheseTab'
+import { OpportuniteTab } from './components/OpportuniteTab'
+import { MarqueTab } from './components/MarqueTab'
+import { MarketingTab } from './components/MarketingTab'
+import { ImplantationTab } from './components/ImplantationTab'
 
 const TABS = [
   { id: 'synthese', label: 'Synthèse', icon: LayoutDashboard },
@@ -143,27 +148,23 @@ export default function ProjectPage() {
 
           <div className="flex-1 p-4 sm:p-8 max-w-content mx-auto w-full">
             <Tabs.Content value="synthese" className="outline-none">
-              <div className="card text-center py-20">
-                <LayoutDashboard size={48} className="text-brand mx-auto mb-4 opacity-50" />
-                <h2 className="font-display text-2xl font-bold mb-2">Synthèse</h2>
-                <p className="text-slate-500">Module en cours de construction.</p>
-              </div>
+              <SyntheseTab dossier={dossier} />
             </Tabs.Content>
             
             <Tabs.Content value="opportunite" className="outline-none">
-              <div className="card">Opportunité</div>
+              <OpportuniteTab concept={dossier.concept} />
             </Tabs.Content>
             
             <Tabs.Content value="marque" className="outline-none">
-              <div className="card">Marque</div>
+              <MarqueTab branding={dossier.branding} />
             </Tabs.Content>
             
             <Tabs.Content value="marketing" className="outline-none">
-              <div className="card">Marketing</div>
+              <MarketingTab marketing={dossier.marketingPrompts} />
             </Tabs.Content>
             
             <Tabs.Content value="implantation" className="outline-none">
-              <div className="card">Implantation</div>
+              <ImplantationTab location={dossier.locationStrategy} />
             </Tabs.Content>
             
             <Tabs.Content value="finances" className="outline-none">
