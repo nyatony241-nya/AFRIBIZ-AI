@@ -189,7 +189,7 @@ const businessPlanSchema = {
 };
 
 // --- HELPER DE GENERATION ---
-async function generate(prompt: string, schema: any, modelName = 'gemini-2.5-flash') {
+async function generate(prompt: string, schema: any, modelName = 'gemini-3.8-flash') {
   if (!process.env.GEMINI_API_KEY) throw new Error('GEMINI_API_KEY missing');
   
   const model = genAI.getGenerativeModel({
