@@ -118,9 +118,6 @@ export default function ProjectPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <button className="btn-secondary hidden sm:flex text-sm py-1.5 min-h-[36px]">
-            <RefreshCw size={14} /> Régénérer
-          </button>
           <button className="btn-primary text-sm py-1.5 min-h-[36px]" onClick={handlePrint}>
             <Download size={14} /> Exporter PDF
           </button>
@@ -128,7 +125,7 @@ export default function ProjectPage() {
       </header>
 
       <main className="flex-1">
-        <Tabs.Root defaultValue="finances" className="flex flex-col h-full">
+        <Tabs.Root defaultValue="synthese" className="flex flex-col h-full">
           <div className="bg-surface border-b border-border sticky top-16 z-30 overflow-x-auto scrollbar-none no-print">
             <Tabs.List className="flex px-4 sm:px-8 max-w-content mx-auto min-w-max">
               {TABS.map((tab) => (

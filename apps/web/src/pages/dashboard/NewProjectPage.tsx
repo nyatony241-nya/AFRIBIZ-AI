@@ -23,6 +23,8 @@ export default function NewProjectPage() {
   const navigate = useNavigate()
   const [currentStep, setCurrentStep] = useState(1)
   const [mode, setMode] = useState<ProjectMode | null>(null)
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [loadingStep, setLoadingStep] = useState(0)
   
   const { register, handleSubmit, control, watch, formState: { errors, isValid }, trigger, setValue } = useForm<ProjectInput>({
     resolver: zodResolver(ProjectInputSchema),
@@ -76,8 +78,25 @@ export default function NewProjectPage() {
 
   const onSubmit = async (data: ProjectInput) => {
     try {
-      // Afficher un loading toast (la génération prend ~20 sec)
-      const toastId = toast.loading("Analyse de votre projet par l'IA...")
+      setIsGenerating(true)
+      setLoadingStep(1) // Etape 1
+      
+      const messages = [
+        "Analyse de l'opportunité par l'IA...",
+        "Génération du Business Plan...",
+        "Modélisation financière...",
+        "Création de la marque..."
+      ]
+      let stepIndex = 0
+      const interval = setInterval(() => {
+        stepIndex++
+        if (stepIndex < messages.length) {
+          setLoadingStep(stepIndex + 1)
+        }
+      }, 5000)
+
+      // Afficher un loading toast
+      const toastId = toast.loading("Démarrage de la génération...")
       
       const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/generate/dossier', {
         method: 'POST',
@@ -86,6 +105,8 @@ export default function NewProjectPage() {
       })
       
       const result = await res.json()
+      clearInterval(interval)
+      setIsGenerating(false)
       
       if (!res.ok || !result.success) {
         toast.error(result.error || 'Erreur lors de la génération', { id: toastId })
@@ -107,6 +128,7 @@ export default function NewProjectPage() {
       navigate(`/projets/demo`)
       
     } catch (err) {
+      setIsGenerating(false)
       toast.error('Impossible de se connecter au serveur IA')
       console.error(err)
     }
@@ -374,9 +396,22 @@ export default function NewProjectPage() {
                     Continuer <ArrowRight size={16} />
                   </button>
                 ) : (
-                  <button type="submit" className="btn-primary" disabled={!isValid}>
-                    <Sparkles size={16} />
-                    Lancer la génération
+                  <button type="submit" className="btn-primary min-w-[200px]" disabled={!isValid || isGenerating}>
+                    {isGenerating ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        {loadingStep === 1 && "Analyse..."}
+                        {loadingStep === 2 && "Business Plan..."}
+                        {loadingStep === 3 && "Finances..."}
+                        {loadingStep === 4 && "Finalisation..."}
+                        {loadingStep > 4 && "Création..."}
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles size={16} />
+                        Lancer la génération
+                      </>
+                    )}
                   </button>
                 )}
               </div>
