@@ -23,7 +23,7 @@ export function StudioTab({ dossier }: StudioTabProps) {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/", {
+      const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/generate/images', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -114,7 +114,7 @@ export function UnlockBanner({ projectId, creditsBalance }: UnlockBannerProps) {
             className="btn-primary whitespace-nowrap"
             onClick={async () => {
               try {
-                const res = await fetch((import.meta.env.VITE_API_URL || "") + , {
+                const res = await fetch((import.meta.env.VITE_API_URL || '') + `/api/projects/${projectId}/unlock`, {
                   method: 'POST',
                   credentials: 'include',
                 })

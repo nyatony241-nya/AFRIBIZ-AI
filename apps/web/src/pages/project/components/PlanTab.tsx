@@ -25,7 +25,7 @@ export function PlanTab({ plan }: PlanTabProps) {
   const handlePayment = async () => {
     setIsPaying(true)
     try {
-      const res = await fetch((import.meta.env.VITE_API_URL || "") + "/", {
+      const res = await fetch((import.meta.env.VITE_API_URL || '') + '/api/payment/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
