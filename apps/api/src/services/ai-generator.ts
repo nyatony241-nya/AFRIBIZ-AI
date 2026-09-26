@@ -5,7 +5,7 @@ import { getMarketingPrompt } from '../prompts/marketing.js';
 import { getLocationPrompt } from '../prompts/location.js';
 import { getFinancePrompt } from '../prompts/finance-hypotheses.js';
 import { getBusinessPlanPrompt } from '../prompts/business-plan.js';
-import { ProjectInput } from '@afribiz/shared';
+import { ProjectInput } from '../shared/index.js';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 

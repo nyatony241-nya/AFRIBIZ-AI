@@ -3,7 +3,7 @@ import {
   ProjectInput, 
   AfriBizDossier, 
   generateAllScenarios 
-} from '@afribiz/shared';
+} from '../shared/index.js';
 import { 
   generateOpportunity, 
   generateBranding, 

@@ -1,5 +1,5 @@
 import { buildMarketContextBlock } from '../data/market-context.js';
-import { ProjectInput } from '@afribiz/shared';
+import { ProjectInput } from '../shared/index.js';
 
 export function getLocationPrompt(params: ProjectInput) {
   const { city, country, sector, hasPhysicalLocation, isRemoteManaged } = params;
