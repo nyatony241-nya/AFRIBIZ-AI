@@ -1,0 +1,424 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   AFRIBIZ ARCHITECT — GLOBAL STYLES
+   ============================================================ */
+
+@layer base {
+  :root {
+    --color-ivory:        #FFFBF5;
+    --color-surface:      #FFFFFF;
+    --color-forest:       #102D26;
+    --color-forest-light: #183D33;
+    --color-forest-deep:  #0A1E1A;
+    --color-brand:        #059669;
+    --color-brand-dark:   #047857;
+    --color-gold:         #C79A45;
+    --color-text:         #0F172A;
+    --color-text-muted:   #5B6472;
+    --color-border:       #E8E2D8;
+    --sidebar-width:      264px;
+    --content-max-width:  1320px;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif;
+    background-color: var(--color-ivory);
+    color: var(--color-text);
+    font-size: 1rem;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Typographie par défaut */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  /* Montants financiers — chiffres tabulaires */
+  .font-amount {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Focus visible — accessibilité */
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Sélection de texte */
+  ::selection {
+    background-color: rgba(5, 150, 105, 0.2);
+    color: var(--color-text);
+  }
+
+  /* Scrollbar personnalisée */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #C4BEB6;
+  }
+}
+
+/* ============================================================
+   COMPOSANTS RÉUTILISABLES
+   ============================================================ */
+
+@layer components {
+
+  /* --- BOUTONS --- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-sans font-semibold 
+           transition-all duration-200 rounded-input focus-visible:outline-none
+           focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed
+           select-none cursor-pointer text-sm;
+    min-height: 44px;
+    padding: 0 1.25rem;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-dark text-white hover:bg-brand active:bg-brand-dark
+           shadow-sm hover:shadow-brand;
+  }
+
+  .btn-primary-lg {
+    @apply btn-primary text-base;
+    padding: 0 2rem;
+    min-height: 52px;
+  }
+
+  .btn-secondary {
+    @apply btn bg-surface text-slate-900 border border-border 
+           hover:border-brand hover:text-brand-dark active:bg-ivory;
+  }
+
+  .btn-ghost {
+    @apply btn text-slate-600 hover:bg-brand-muted hover:text-brand-dark;
+  }
+
+  .btn-gold {
+    @apply btn bg-gold text-white hover:bg-gold-light active:bg-gold;
+  }
+
+  .btn-danger {
+    @apply btn bg-error text-white hover:bg-red-700;
+  }
+
+  .btn-outline-white {
+    @apply btn border-2 border-white text-white hover:bg-white hover:text-forest;
+  }
+
+  /* --- INPUTS --- */
+  .input {
+    @apply w-full rounded-input border border-border bg-surface px-4 py-3
+           text-slate-900 placeholder-slate-400 font-sans text-sm
+           transition-all duration-150
+           focus:outline-none focus:border-brand focus:shadow-input
+           disabled:bg-neutral-50 disabled:text-slate-400 disabled:cursor-not-allowed;
+    min-height: 44px;
+  }
+
+  .input-error {
+    @apply input border-error focus:border-error focus:shadow-none;
+  }
+
+  .label {
+    @apply block text-sm font-semibold text-slate-900 mb-1.5;
+  }
+
+  .label-hint {
+    @apply block text-xs text-slate-600 mt-1;
+  }
+
+  .error-message {
+    @apply text-xs text-error mt-1 flex items-center gap-1;
+  }
+
+  /* --- CARTES --- */
+  .card {
+    @apply bg-surface rounded-card border border-border shadow-card p-6;
+  }
+
+  .card-interactive {
+    @apply card cursor-pointer transition-all duration-200
+           hover:shadow-card-hover hover:-translate-y-0.5;
+  }
+
+  .card-forest {
+    @apply rounded-card border border-forest-light bg-forest text-white p-6;
+  }
+
+  .card-brand {
+    @apply rounded-card bg-brand-muted border border-green-200 p-6;
+  }
+
+  /* --- BADGES --- */
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-badge px-3 py-1 
+           text-xs font-semibold;
+  }
+
+  .badge-new {
+    @apply badge bg-brand text-white;
+  }
+
+  .badge-draft {
+    @apply badge bg-neutral-100 text-slate-600 border border-border;
+  }
+
+  .badge-generating {
+    @apply badge bg-gold-muted text-amber-700 border border-amber-200;
+  }
+
+  .badge-available {
+    @apply badge bg-brand-muted text-brand-dark border border-green-200;
+  }
+
+  .badge-failed {
+    @apply badge bg-red-50 text-error border border-red-200;
+  }
+
+  .badge-partial {
+    @apply badge bg-orange-50 text-orange-700 border border-orange-200;
+  }
+
+  /* --- NAVIGATION --- */
+  .nav-link {
+    @apply text-sm font-medium text-slate-600 hover:text-brand-dark
+           transition-colors duration-150 px-2 py-1 rounded;
+  }
+
+  .nav-link-active {
+    @apply nav-link text-brand-dark font-semibold;
+  }
+
+  /* --- SECTIONS --- */
+  .section-container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: var(--content-max-width);
+  }
+
+  .section-tag {
+    @apply inline-flex items-center gap-2 text-xs font-bold uppercase 
+           tracking-widest text-brand mb-4;
+  }
+
+  /* --- SKELETON --- */
+  .skeleton {
+    @apply rounded-input bg-neutral-200 animate-skeleton;
+  }
+
+  /* --- DIVIDER --- */
+  .divider {
+    @apply border-t border-border my-6;
+  }
+
+  /* --- STAT CARD --- */
+  .stat-card {
+    @apply card text-center;
+  }
+
+  .stat-value {
+    @apply font-display text-4xl font-bold text-brand-dark mb-1;
+  }
+
+  .stat-label {
+    @apply text-sm font-medium text-slate-600;
+  }
+
+  .stat-desc {
+    @apply text-xs text-slate-400 mt-1;
+  }
+
+  /* --- STEP INDICATOR --- */
+  .step-dot {
+    @apply w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
+           transition-all duration-200;
+  }
+
+  .step-dot-active {
+    @apply step-dot bg-brand text-white shadow-brand;
+  }
+
+  .step-dot-done {
+    @apply step-dot bg-brand-dark text-white;
+  }
+
+  .step-dot-pending {
+    @apply step-dot bg-neutral-100 text-slate-400 border border-border;
+  }
+
+  /* --- TOAST --- */
+  .toast-success {
+    @apply flex items-center gap-3 bg-surface border border-green-200 
+           rounded-card shadow-dialog px-4 py-3 text-sm font-medium text-slate-900;
+  }
+
+  /* --- TABLE --- */
+  .table-responsive {
+    @apply overflow-x-auto -mx-6 px-6;
+  }
+
+  .data-table {
+    @apply w-full text-sm border-collapse;
+  }
+
+  .data-table th {
+    @apply text-left text-xs font-bold uppercase tracking-wide text-slate-600
+           border-b border-border pb-3 px-3 whitespace-nowrap;
+  }
+
+  .data-table td {
+    @apply px-3 py-3 border-b border-border text-slate-900;
+  }
+
+  .data-table tr:hover td {
+    @apply bg-ivory;
+  }
+
+  /* --- SIDEBAR --- */
+  .sidebar {
+    @apply fixed top-0 left-0 h-screen bg-forest text-white z-40
+           flex flex-col overflow-y-auto;
+    width: var(--sidebar-width);
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium
+           text-green-200 hover:bg-forest-light hover:text-white
+           transition-all duration-150 cursor-pointer;
+  }
+
+  .sidebar-link-active {
+    @apply sidebar-link bg-brand text-white shadow-sm;
+  }
+
+  /* --- PROGRESS --- */
+  .progress-bar {
+    @apply h-1.5 rounded-full bg-neutral-100 overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full rounded-full bg-brand transition-all duration-500;
+  }
+
+  /* --- HERO GRID LINES (decorative) --- */
+  .hero-grid {
+    background-image: 
+      linear-gradient(rgba(5,150,105,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(5,150,105,0.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+}
+
+/* ============================================================
+   UTILITAIRES GLOBAUX
+   ============================================================ */
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ============================================================
+   IMPRESSION PDF — @media print
+   ============================================================ */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 20mm 15mm;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .card, .card-forest {
+    break-inside: avoid;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  h1, h2, h3 {
+    break-after: avoid;
+    color: #102D26 !important;
+  }
+
+  .sidebar, nav, header, footer, button, .btn {
+    display: none !important;
+  }
+
+  table {
+    break-inside: avoid;
+  }
+
+  tr {
+    break-inside: avoid;
+  }
+
+  .recharts-wrapper {
+    break-inside: avoid;
+  }
+}
