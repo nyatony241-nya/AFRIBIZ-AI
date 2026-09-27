@@ -1,72 +1,107 @@
 import { type Concept } from '@afribiz/shared'
-import { Lightbulb, Trophy, Target, AlertTriangle } from 'lucide-react'
 
 interface OpportuniteTabProps {
   concept: Concept
 }
 
+type Level = 'low' | 'medium' | 'high' | 'fast' | 'slow'
+
+function ScoreMeter({ score }: { score: number }) {
+  const pct = (score / 10) * 100
+  const color = score >= 7 ? 'bg-emerald-500' : score >= 5 ? 'bg-amber-400' : 'bg-rose-400'
+  return (
+    <div className="flex items-center gap-3">
+      <div className="flex-1 h-2 rounded-full bg-slate-100 overflow-hidden">
+        <div
+          className={`h-full rounded-full transition-all duration-700 \${color}`}
+          style={{ width: `\${pct}%` }}
+        />
+      </div>
+      <span className="text-sm font-bold tabular-nums" style={{ minWidth: 32 }}>{score}/10</span>
+    </div>
+  )
+}
+
+function PillBadge({ value }: { value: Level | string }) {
+  const map: Record<string, { label: string; cls: string }> = {
+    high:   { label: '🔼 Élevé',   cls: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
+    medium: { label: '➡️ Moyen',   cls: 'bg-amber-100 text-amber-800 border-amber-200' },
+    low:    { label: '🔽 Faible',  cls: 'bg-rose-100 text-rose-800 border-rose-200' },
+    fast:   { label: '⚡ Rapide',  cls: 'bg-blue-100 text-blue-800 border-blue-200' },
+    slow:   { label: '🐢 Lent',    cls: 'bg-slate-100 text-slate-700 border-slate-200' },
+  }
+  const entry = map[value] ?? { label: String(value), cls: 'bg-slate-100 text-slate-700 border-slate-200' }
+  return (
+    <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full border \${entry.cls}`}>
+      {entry.label}
+    </span>
+  )
+}
+
 export function OpportuniteTab({ concept }: OpportuniteTabProps) {
-  // Le premier ranking correspond souvent à l'idée recommandée
-  const mainRanking = concept.rankings[0]
+  const winner = concept.rankings[0]
 
   return (
     <div className="space-y-6">
-      <div className="card bg-brand/5 border-brand/20 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
-          <Lightbulb size={120} />
-        </div>
-        <div className="relative z-10">
-          <div className="flex items-center gap-2 text-brand-dark mb-4">
-            <Trophy size={20} />
-            <h2 className="font-display font-bold text-lg">Idée Recommandée par l'IA</h2>
-          </div>
-          <p className="font-display font-semibold text-2xl mb-4 leading-tight">
-            {concept.recommendedIdea}
-          </p>
-          <div className="bg-white/60 p-4 rounded-lg backdrop-blur-sm">
-            <p className="text-slate-700 leading-relaxed">
-              {concept.justification}
-            </p>
-          </div>
+
+      {/* ── Idée Vedette ── */}
+      <div
+        className="rounded-2xl p-8 text-white relative overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, #1e40af 0%, #7c3aed 100%)' }}
+      >
+        <div className="absolute -bottom-8 -right-8 w-48 h-48 rounded-full opacity-10 bg-white pointer-events-none" />
+        <div className="relative z-10 space-y-4">
+          <span className="text-blue-200 text-xs font-bold uppercase tracking-widest">🏆 Recommandation de l'IA</span>
+          <h2 className="font-display font-bold text-3xl leading-tight">{concept.recommendedIdea}</h2>
+          <p className="text-blue-100 leading-relaxed max-w-2xl">{concept.justification}</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {concept.rankings.map((ranking, index) => (
-          <div key={ranking.id || index} className={`card \${index === 0 ? 'border-brand/30 shadow-sm' : ''}`}>
-            <div className="flex justify-between items-start mb-3">
-              <span className="badge-available bg-slate-100 text-slate-700 border-none px-2 py-1">
-                Option #{index + 1}
+      {/* ── 3 Concepts analysés ── */}
+      <h3 className="font-display font-bold text-lg px-1">⚖️ Comparaison des 3 concepts analysés</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {concept.rankings.map((r, idx) => (
+          <div
+            key={r.id || idx}
+            className={`card relative transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover
+              \${idx === 0 ? 'border-2 border-brand' : ''}`}
+          >
+            {idx === 0 && (
+              <span className="absolute -top-3 left-4 bg-brand text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                ✅ Recommandé
               </span>
-              <div className="flex items-center gap-1 text-xs font-medium px-2 py-1 rounded bg-amber-100 text-amber-800">
-                Score: {ranking.score}/10
-              </div>
+            )}
+            <div className="flex justify-between items-start mt-2 mb-4">
+              <span className="text-3xl font-bold text-slate-200">#{idx + 1}</span>
+              <span
+                className={`text-xs font-bold px-2.5 py-1 rounded-full
+                  \${r.score >= 7 ? 'bg-emerald-100 text-emerald-800' : r.score >= 5 ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'}`}
+              >
+                {r.score}/10
+              </span>
             </div>
-            
-            <h3 className="font-display font-bold mb-2">{ranking.idea}</h3>
-            <p className="text-sm text-slate-600 mb-4 line-clamp-3" title={ranking.description}>
-              {ranking.description}
-            </p>
-            
-            <div className="space-y-2 mt-auto">
-              <div className="flex justify-between text-xs">
-                <span className="text-slate-500">Rentabilité</span>
-                <span className="font-medium capitalize">{ranking.estimatedProfitability}</span>
+
+            <h4 className="font-display font-bold text-base mb-1">{r.idea}</h4>
+            <p className="text-sm text-slate-500 mb-5 leading-relaxed">{r.description}</p>
+
+            <div className="space-y-3 border-t border-border pt-4">
+              <div>
+                <p className="text-xs text-slate-400 mb-1 font-medium">Score global</p>
+                <ScoreMeter score={r.score} />
               </div>
-              <div className="flex justify-between text-xs">
-                <span className="text-slate-500">Vitesse de lancement</span>
-                <span className="font-medium capitalize">{ranking.startupSpeed}</span>
+              <div className="flex flex-wrap gap-2">
+                <PillBadge value={r.estimatedProfitability} />
+                <PillBadge value={r.startupSpeed} />
               </div>
-              <div className="flex justify-between text-xs">
-                <span className="text-slate-500">Risque</span>
-                <span className={`font-medium capitalize \${ranking.risk === 'high' ? 'text-error' : ranking.risk === 'medium' ? 'text-amber-600' : 'text-success'}`}>
-                  {ranking.risk}
-                </span>
+              <div className="flex items-center gap-2 text-xs text-slate-500">
+                <span>Risque :</span>
+                <PillBadge value={r.risk} />
               </div>
             </div>
           </div>
         ))}
       </div>
+
     </div>
   )
 }
